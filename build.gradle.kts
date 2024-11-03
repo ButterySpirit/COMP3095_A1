@@ -18,14 +18,23 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot Starters
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // Flyway for Database Migration
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
+
+    // PostgreSQL Driver
+    runtimeOnly("org.postgresql:postgresql:42.7.4")  // Make sure to specify version if needed
+
+    // Development only dependencies
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("org.postgresql:postgresql")
+
+    // Test Dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
@@ -36,4 +45,16 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+// Disable bootJar if not needed
+tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    enabled = false
+}
+
+// Optionally configure JAR task if building a standard JAR
+tasks.getByName<Jar>("jar") {
+    enabled = true
+    archiveBaseName.set("your-app-name")  // Replace with your desired JAR name
+    archiveVersion.set("0.0.1-SNAPSHOT")
 }

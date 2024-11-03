@@ -40,3 +40,6 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+tasks.bootJar {
+    mainClass.set("com.example.eventservice.EventServiceApplication")
+}
