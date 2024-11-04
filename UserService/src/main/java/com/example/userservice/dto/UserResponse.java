@@ -19,4 +19,6 @@ public class UserResponse {
     private UserType userType;
     private UserRole role;
     private Boolean isActive;
+    private String department;
+
 }

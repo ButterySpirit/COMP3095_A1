@@ -43,11 +43,13 @@ public class UserServiceImpl implements UserService {
     public User updateUser(Long id, User userDetails) {
         User user = getUserById(id);
 
+        // Update all fields
         user.setName(userDetails.getName());
         user.setEmail(userDetails.getEmail());
         user.setPhoneNumber(userDetails.getPhoneNumber());
         user.setUserType(userDetails.getUserType());
         user.setRole(userDetails.getRole());
+        user.setDepartment(userDetails.getDepartment()); // Ensure department is updated
         user.setIsActive(userDetails.getIsActive());
 
         return userRepository.save(user);

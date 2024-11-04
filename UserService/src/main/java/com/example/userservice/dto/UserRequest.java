@@ -18,5 +18,25 @@ public class UserRequest {
     private String phoneNumber;
     private UserType userType;
     private UserRole role;
+    private String department;
+    private Boolean isActive; // Add this field
+
+    // Add getter and setter for isActive
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    // Getters and Setters
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 }
 

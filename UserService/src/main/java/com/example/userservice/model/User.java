@@ -41,6 +41,9 @@ public class User {
     @Column(nullable = false)
     private Boolean isActive = true;
 
+    @Column(nullable = true)
+    private String department;  // Added department field
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -49,4 +52,3 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }
-
