@@ -33,8 +33,8 @@ public class Room {
     private String floor;
 
     @ElementCollection
-    @CollectionTable(name = "room_features",
-            joinColumns = @JoinColumn(name = "room_id"))
+    @CollectionTable(name = "room_features", joinColumns = @JoinColumn(name = "room_id"))
+    @Column(name = "feature", nullable = false)  // Make sure 'feature' column is not nullable
     @Enumerated(EnumType.STRING)
     private Set<RoomFeature> features;
 
