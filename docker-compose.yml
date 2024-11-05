@@ -20,12 +20,19 @@ services:
   booking-db:
     image: mongo:latest
     container_name: booking-db
+    environment:
+      MONGO_INITDB_DATABASE: bookingdb
     ports:
-      - "27017:27017"  # Exposing MongoDB to localhost on port 27017
+      - "27020:27017"
     volumes:
       - bookingdb-data:/data/db
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # User database (PostgreSQL)
   user-db:
@@ -46,6 +53,8 @@ services:
   event-db:
     image: mongo:latest
     container_name: event-db
+    environment:
+      MONGO_INITDB_DATABASE: eventdb
     ports:
       - "27018:27017"  # Exposing MongoDB to localhost on port 27018
     volumes:
@@ -57,10 +66,86 @@ services:
   approval-db:
     image: mongo:latest
     container_name: approval-db
+    environment:
+      MONGO_INITDB_DATABASE: approvaldb
     ports:
       - "27019:27017"  # Exposing MongoDB to localhost on port 27019
     volumes:
       - approvaldb-data:/data/db
+    networks:
+      - microservices-network
+
+  # Room Service
+  room-service:
+    build:
+      context: ./RoomService
+    container_name: room-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://room-db:5432/roomdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yourpassword
+    ports:
+      - "8888:8081"  # Exposing Room Service to localhost on port 8087w t
+    depends_on:
+      - room-db
+    networks:
+      - microservices-network
+
+  # Booking Service
+  booking-service:
+    build:
+      context: ./BookingService
+    container_name: booking-service
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://booking-db:27017/bookingdb
+    ports:
+      - "8086:8082"  # Exposing Booking Service to localhost on port 8082
+    depends_on:
+      - booking-db
+    networks:
+      - microservices-network
+
+  # User Service
+  user-service:
+    build:
+      context: ./UserService
+    container_name: user-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/userdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yourpassword
+    ports:
+      - "8083:8083"  # Exposing User Service to localhost on port 8083
+    depends_on:
+      - user-db
+    networks:
+      - microservices-network
+
+  # Event Service
+  event-service:
+    build:
+      context: ./EventService
+    container_name: event-service
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://event-db:27017/eventdb
+    ports:
+      - "8084:8084"  # Exposing Event Service to localhost on port 8084
+    depends_on:
+      - event-db
+    networks:
+      - microservices-network
+
+  # Approval Service
+  approval-service:
+    build:
+      context: ./ApprovalService
+    container_name: approval-service
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://approval-db:27017/approvaldb
+    ports:
+      - "8085:8085"  # Exposing Approval Service to localhost on port 8085
+    depends_on:
+      - approval-db
     networks:
       - microservices-network
 

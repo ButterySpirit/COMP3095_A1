@@ -25,6 +25,11 @@ public class ApprovalController {
         return new ResponseEntity<>(approvalService.createApproval(approval), HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Approval>> getAllApprovals() {
+        return ResponseEntity.ok(approvalService.getAllApprovals());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Approval> getApprovalById(@PathVariable String id) {
         return ResponseEntity.ok(approvalService.getApprovalById(id));

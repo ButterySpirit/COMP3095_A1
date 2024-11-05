@@ -8,6 +8,7 @@ import java.util.List;
 public interface ApprovalService {
     Approval createApproval(Approval approval);
     Approval getApprovalById(String id);
+    List<Approval> getAllApprovals();
     List<Approval> getApprovalsByRequesterId(Long requesterId);
     List<Approval> getApprovalsByApproverId(Long approverId);
     List<Approval> getApprovalsByStatus(ApprovalStatus status);

@@ -20,6 +20,11 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
+    public List<Approval> getAllApprovals() {
+        return approvalRepository.findAll();
+    }
+
+    @Override
     public Approval getApprovalById(String id) {
         return approvalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Approval not found"));
